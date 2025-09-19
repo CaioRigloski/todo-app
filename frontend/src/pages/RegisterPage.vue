@@ -4,11 +4,8 @@
       <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Registrar</h2>
 
       <form @submit.prevent="register" class="space-y-4">
-        <!-- Nome -->
         <div>
-          <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-            Nome
-          </label>
+          <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
           <input
             id="name"
             type="text"
@@ -19,11 +16,8 @@
           />
         </div>
 
-        <!-- Email -->
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <input
             id="email"
             type="email"
@@ -34,11 +28,8 @@
           />
         </div>
 
-        <!-- Senha -->
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
-            Senha
-          </label>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
           <input
             id="password"
             type="password"
@@ -49,7 +40,8 @@
           />
         </div>
 
-        <!-- Botão Registrar -->
+        <p v-if="auth.errorMessage" class="text-red-600 text-sm">{{ auth.errorMessage }}</p>
+
         <button
           type="submit"
           class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition"
@@ -60,9 +52,7 @@
 
       <p class="mt-4 text-center text-gray-600">
         Já tem uma conta?
-        <router-link to="/" class="text-blue-600 hover:underline">
-          Faça login
-        </router-link>
+        <router-link to="/" class="text-blue-600 hover:underline">Faça login</router-link>
       </p>
     </div>
   </div>
@@ -81,13 +71,10 @@ const email = ref('');
 const password = ref('');
 
 async function register() {
-  try {
-    await auth.register({ name: name.value, email: email.value, password: password.value });
+  const success = await auth.register({ name: name.value, email: email.value, password: password.value });
+  if (success) {
     alert('Registro realizado com sucesso! Faça login.');
     router.push('/');
-  } catch (err) {
-    console.error(err);
-    alert('Falha ao registrar');
   }
 }
 </script>
