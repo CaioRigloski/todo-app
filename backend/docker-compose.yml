@@ -1,0 +1,26 @@
+name: todo-app
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: todo_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build: ./
+    restart: always
+    environment:
+      DATABASE_URL: mysql://root:root@db:3306/todo_db
+      JWT_SECRET: supersecretkey
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
