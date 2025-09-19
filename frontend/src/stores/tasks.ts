@@ -1,7 +1,5 @@
-// tasksStore.ts
 import { defineStore } from 'pinia';
-import axios from 'axios';
-import { useAuthStore } from './auth';
+import api from '../plugins/axios';
 
 interface Task {
   id: number;
@@ -17,15 +15,7 @@ export const useTasksStore = defineStore('tasks', {
   actions: {
     async fetchTasks() {
       try {
-        const auth = useAuthStore();
-        if (!auth.token) {
-          this.clear();
-          return;
-        }
-
-        const res = await axios.get('/api/tasks', {
-          headers: { Authorization: `Bearer ${auth.token}` },
-        });
+        const res = await api.get('/api/tasks');
         this.tasks = res.data;
       } catch (err) {
         console.error('Erro ao buscar tasks:', err);
@@ -34,34 +24,31 @@ export const useTasksStore = defineStore('tasks', {
     },
 
     async addTask(task: { title: string; description?: string }) {
-      const auth = useAuthStore();
-      if (!auth.token) return;
-
-      const res = await axios.post('/api/tasks', task, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
-      this.tasks.push(res.data);
+      try {
+        const res = await api.post('/api/tasks', task);
+        this.tasks.push(res.data);
+      } catch (err) {
+        console.error('Erro ao adicionar task:', err);
+      }
     },
 
     async updateTask(id: number, task: Task) {
-      const auth = useAuthStore();
-      if (!auth.token) return;
-
-      const res = await axios.put(`/api/tasks/${id}`, task, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
-      const index = this.tasks.findIndex(t => t.id === id);
-      if (index !== -1) this.tasks[index] = res.data;
+      try {
+        const res = await api.put(`/api/tasks/${id}`, task);
+        const index = this.tasks.findIndex(t => t.id === id);
+        if (index !== -1) this.tasks[index] = res.data;
+      } catch (err) {
+        console.error('Erro ao atualizar task:', err);
+      }
     },
 
     async deleteTask(id: number) {
-      const auth = useAuthStore();
-      if (!auth.token) return;
-
-      await axios.delete(`/api/tasks/${id}`, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
-      this.tasks = this.tasks.filter(t => t.id !== id);
+      try {
+        await api.delete(`/api/tasks/${id}`);
+        this.tasks = this.tasks.filter(t => t.id !== id);
+      } catch (err) {
+        console.error('Erro ao deletar task:', err);
+      }
     },
 
     clear() {

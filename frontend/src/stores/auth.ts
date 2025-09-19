@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import api from '../plugins/axios';
 import router from '../router';
 import { useTasksStore } from './tasks';
 
@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', {
   }),
   actions: {
     async login(email: string, password: string) {
-      const res = await axios.post('/api/auth/login', { email, password });
+      const res = await api.post('/api/auth/login', { email, password });
       this.token = res.data.access_token;
 
       if (!this.token) {
@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', {
       router.push('/tasks');
     },
     async register(data: { name: string; email: string; password: string }) {
-      await axios.post('/api/auth/register', data);
+      await api.post('/api/auth/register', data);
     },
     logout() {
       this.token = null;
