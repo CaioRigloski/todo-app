@@ -32,6 +32,8 @@
           />
         </div>
 
+        <p v-if="auth.errorMessage" class="text-red-600 text-sm">{{ auth.errorMessage }}</p>
+
         <button
           type="submit"
           class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition"
@@ -57,8 +59,10 @@ import { useAuthStore } from '../stores/auth';
 const auth = useAuthStore();
 const email = ref('');
 const password = ref('');
+const errorMessage = ref('');
 
-function login() {
-  auth.login(email.value, password.value);
+async function login() {
+  const success = await auth.login(email.value, password.value);
+  if (!success) return;
 }
 </script>

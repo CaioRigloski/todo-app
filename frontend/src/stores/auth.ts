@@ -6,21 +6,31 @@ import { useTasksStore } from './tasks';
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('token') || null,
+    errorMessage: '' as string,
   }),
   actions: {
     async login(email: string, password: string) {
-      const res = await api.post('/api/auth/login', { email, password });
-      this.token = res.data.access_token;
+      this.errorMessage = '';
+      try {
+        const res = await api.post('/api/auth/login', { email, password });
+        this.token = res.data.access_token;
 
-      if (!this.token) {
-        throw new Error('No token received');
+        if (!this.token) {
+          this.errorMessage = 'Não foi possível obter o token.';
+          return false;
+        }
+
+        localStorage.setItem('token', this.token);
+        router.push('/tasks');
+        return true;
+      } catch (err: any) {
+        if (err.response?.status === 401) {
+          this.errorMessage = 'Email ou senha incorretos.';
+        } else {
+          this.errorMessage = 'Ocorreu um erro. Tente novamente.';
+        }
+        return false;
       }
-      
-      localStorage.setItem('token', this.token);
-      router.push('/tasks');
-    },
-    async register(data: { name: string; email: string; password: string }) {
-      await api.post('/api/auth/register', data);
     },
     logout() {
       this.token = null;
