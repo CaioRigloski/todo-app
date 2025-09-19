@@ -49,5 +49,15 @@ export const useTasksStore = defineStore('tasks', {
         console.error('Erro ao deletar task:', err);
       }
     },
+
+    async updateTask(id: number, task: Task) {
+      const res = await axios.put(`/api/tasks/${id}`, task, {
+        headers: { Authorization: `Bearer ${this.token}` }
+      });
+      const index = this.tasks.findIndex(t => t.id === id);
+      if (index !== -1) {
+        this.tasks[index] = res.data;
+      }
+    }
   },
 });

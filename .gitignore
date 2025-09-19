@@ -3,3 +3,4 @@ dist/
 .env
 .cache/
 *.tmp
+package-lock.json
