@@ -32,7 +32,7 @@
           />
         </div>
 
-        <p v-if="auth.errorMessage" class="text-red-600 text-sm">{{ auth.errorMessage }}</p>
+        <p v-if="auth.loginErrorMessage" class="text-red-600 text-sm">{{ auth.loginErrorMessage }}</p>
 
         <button
           type="submit"
@@ -52,17 +52,24 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useAuthStore } from '../stores/auth';
 
 const auth = useAuthStore();
 const email = ref('');
 const password = ref('');
-const errorMessage = ref('');
 
 async function login() {
   const success = await auth.login(email.value, password.value);
   if (!success) return;
 }
+
+onMounted(() => {
+  auth.loginErrorMessage = '';
+});
+
+onBeforeUnmount(() => {
+  auth.loginErrorMessage = '';
+});
 </script>

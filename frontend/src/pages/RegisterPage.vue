@@ -40,7 +40,7 @@
           />
         </div>
 
-        <p v-if="auth.errorMessage" class="text-red-600 text-sm">{{ auth.errorMessage }}</p>
+        <p v-if="auth.registerErrorMessage" class="text-red-600 text-sm">{{ auth.registerErrorMessage }}</p>
 
         <button
           type="submit"
@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useRouter } from 'vue-router';
 
@@ -77,4 +77,12 @@ async function register() {
     router.push('/');
   }
 }
+
+onMounted(() => {
+  auth.registerErrorMessage = '';
+});
+
+onBeforeUnmount(() => {
+  auth.registerErrorMessage = '';
+});
 </script>
