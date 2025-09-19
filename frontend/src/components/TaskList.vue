@@ -52,7 +52,7 @@
               : 'bg-green-600 text-white hover:bg-green-700'
           ]"
         >
-          {{ task.status === 'concluída' ? '↩️ Marcar Pendente' : '✅ Concluir' }}
+          {{ task.status === 'concluída' ? '↩️ Marcar como Pendente' : '✅ Concluir' }}
         </button>
 
         <button

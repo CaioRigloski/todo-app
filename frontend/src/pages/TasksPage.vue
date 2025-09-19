@@ -1,11 +1,17 @@
 <template>
   <div class="max-w-3xl mx-auto p-6">
-    <button
-      @click="openForm()"
-      class="mb-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-    >
-      ➕ Nova Task
-    </button>
+    <div class="flex justify-between items-center mb-6">
+      <button
+        @click="openForm()"
+        class="mb-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+      >
+        ➕ Nova Task
+      </button>
+  
+      <button @click="auth.logout()" class="px-3 py-1 bg-red-600 text-white rounded">
+        Logout
+      </button>
+    </div>
 
     <TaskForm
       :visible="showModal"
@@ -28,6 +34,9 @@ import { ref, onMounted } from 'vue'
 import { useTasksStore } from '@/stores/tasks'
 import TaskForm from '@/components/TaskForm.vue'
 import TaskList from '@/components/TaskList.vue'
+import { useAuthStore } from '@/stores/auth'
+
+const auth = useAuthStore()
 
 const tasksStore = useTasksStore()
 const showModal = ref(false)
