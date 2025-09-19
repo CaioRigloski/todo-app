@@ -18,6 +18,7 @@
       :tasks="tasksStore.tasks"
       @edit-task="editTask"
       @delete-task="deleteTask"
+      @toggle-status="toggleStatus"
     />
   </div>
 </template>
@@ -48,6 +49,14 @@ function editTask(task) {
 
 function deleteTask(id) {
   tasksStore.deleteTask(id)
+}
+
+function toggleStatus(id) {
+  const task = tasksStore.tasks.find(t => t.id === id)
+  if (!task) return
+
+  const newStatus = task.status === 'concluída' ? 'pendente' : 'concluída'
+  tasksStore.updateTask(id, { ...task, status: newStatus })
 }
 
 function handleSaved() {
