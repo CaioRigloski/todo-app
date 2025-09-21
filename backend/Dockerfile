@@ -9,6 +9,8 @@ COPY package*.json ./
 RUN npm install --legacy-peer-deps
 RUN npm install -g @nestjs/cli
 
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 COPY . .
 
 # Build
