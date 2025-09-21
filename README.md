@@ -41,6 +41,11 @@ Entre na pasta do frontend:
 cd ../frontend
 ```
 
+Crie o arquivo `.env` com o endereço da api;
+```
+echo "VITE_API_URL=http://localhost:3000" > .env
+```
+
 Instale as dependências:
 ```sh
 npm install --legacy-peer-deps
