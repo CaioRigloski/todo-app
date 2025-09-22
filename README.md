@@ -66,10 +66,15 @@ Rode a aplicação em modo produção:
 serve -s dist -l 5173
 ```
 
----
-
 ## 🔗 Endereços
 - **Backend API** → [http://localhost:3000](http://localhost:3000)  
 - **Frontend** → [http://localhost:5173](http://localhost:5173)  
+
+
+## Tests
+na pasta `backend` rode:
+```
+npm run test
+``` 
 
 ---
